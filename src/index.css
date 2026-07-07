@@ -1,0 +1,342 @@
+@import "tailwindcss";
+
+/* ============================================
+   DESIGN SYSTEM — Premium Portfolio Theme
+   ============================================ */
+
+@theme {
+  /* ── Colors ── */
+  --color-primary: #2563EB;
+  --color-primary-light: #3B82F6;
+  --color-primary-dark: #1D4ED8;
+  --color-secondary: #7C3AED;
+  --color-secondary-light: #8B5CF6;
+  --color-secondary-dark: #6D28D9;
+  --color-accent: #06B6D4;
+  --color-accent-light: #22D3EE;
+  --color-accent-dark: #0891B2;
+
+  --color-dark-bg: #030712;
+  --color-dark-surface: #0A0F1E;
+  --color-dark-card: rgba(255, 255, 255, 0.05);
+  --color-dark-card-hover: rgba(255, 255, 255, 0.1);
+  --color-dark-border: rgba(255, 255, 255, 0.08);
+  --color-dark-text: #FFFFFF;
+  --color-dark-muted: #9CA3AF;
+  --color-dark-subtle: #6B7280;
+
+  --color-light-bg: #F8FAFC;
+  --color-light-surface: #FFFFFF;
+  --color-light-card: rgba(0, 0, 0, 0.03);
+  --color-light-card-hover: rgba(0, 0, 0, 0.06);
+  --color-light-border: rgba(0, 0, 0, 0.08);
+  --color-light-text: #0F172A;
+  --color-light-muted: #64748B;
+  --color-light-subtle: #94A3B8;
+
+  /* ── Typography ── */
+  --font-heading: 'Space Grotesk', 'Outfit', sans-serif;
+  --font-body: 'Inter', 'Sora', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ── Spacing (rem-based) ── */
+  --spacing-section: 6rem;
+
+  /* ── Animations ── */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-delayed: float 6s ease-in-out 2s infinite;
+  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
+  --animate-gradient-shift: gradient-shift 8s ease infinite;
+  --animate-bounce-slow: bounce-slow 3s ease-in-out infinite;
+  --animate-spin-slow: spin 12s linear infinite;
+  --animate-slide-up: slide-up 0.6s ease-out;
+  --animate-fade-in: fade-in 0.6s ease-out;
+  --animate-shimmer: shimmer 2s linear infinite;
+
+  /* ── Keyframes ── */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(5px) rotate(-1deg); }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+  }
+
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  line-height: 1.7;
+  overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Dark mode (default) */
+body.dark {
+  background-color: var(--color-dark-bg);
+  color: var(--color-dark-text);
+}
+
+/* Light mode */
+body.light {
+  background-color: var(--color-light-bg);
+  color: var(--color-light-text);
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body.dark::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
+  border-radius: 4px;
+}
+
+body.light::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-primary-light), var(--color-secondary-light));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--color-secondary), var(--color-accent));
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+
+::selection {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* ============================================
+   GLASSMORPHISM UTILITIES
+   ============================================ */
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.light .glass {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.light .glass-strong {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   GRADIENT UTILITIES
+   ============================================ */
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ============================================
+   GLOW EFFECTS
+   ============================================ */
+
+.glow-blue {
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.3), 0 0 60px rgba(37, 99, 235, 0.1);
+}
+
+.glow-purple {
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.3), 0 0 60px rgba(124, 58, 237, 0.1);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.3), 0 0 60px rgba(6, 182, 212, 0.1);
+}
+
+.light .glow-blue {
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.15), 0 0 40px rgba(37, 99, 235, 0.05);
+}
+
+.light .glow-purple {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.15), 0 0 40px rgba(124, 58, 237, 0.05);
+}
+
+.light .glow-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 0 40px rgba(6, 182, 212, 0.05);
+}
+
+/* ============================================
+   HEADINGS
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* ============================================
+   SECTION SPACING
+   ============================================ */
+
+.section-padding {
+  padding: 6rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding: 8rem 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section-padding {
+    padding: 8rem 4rem;
+  }
+}
+
+/* ============================================
+   CURSOR STYLES
+   ============================================ */
+
+@media (pointer: fine) {
+  body {
+    cursor: none !important;
+  }
+
+  a, button, input, textarea, select, [role="button"] {
+    cursor: none !important;
+  }
+}
+
+/* ============================================
+   LOADER
+   ============================================ */
+
+.loader-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-dark-bg);
+}
+
+.light .loader-container {
+  background: var(--color-light-bg);
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* ============================================
+   RESPONSIVE CONTAINER
+   ============================================ */
+
+.container-custom {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 1536px) {
+  .container-custom {
+    max-width: 1400px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .container-custom {
+    max-width: 1600px;
+  }
+}
