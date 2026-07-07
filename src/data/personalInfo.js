@@ -91,7 +91,7 @@ const personalInfo = {
     platforms: 3,
     internships: 1,
     technologies: 15,
-    certificates: 3,
+    certificates: 5,
   },
 };
 
