@@ -8,6 +8,7 @@ const Projects = lazy(() => import('../components/sections/Projects'));
 const Experience = lazy(() => import('../components/sections/Experience'));
 const Certifications = lazy(() => import('../components/sections/Certifications'));
 const Achievements = lazy(() => import('../components/sections/Achievements'));
+const Activities = lazy(() => import('../components/sections/Activities'));
 const Services = lazy(() => import('../components/sections/Services'));
 const Statistics = lazy(() => import('../components/sections/Statistics'));
 const FAQ = lazy(() => import('../components/sections/FAQ'));
@@ -28,6 +29,7 @@ export default function Home() {
         <Statistics />
         <Certifications />
         <Achievements />
+        <Activities />
         <Services />
         <FAQ />
         <Contact />

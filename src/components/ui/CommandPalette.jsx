@@ -17,6 +17,7 @@ const sections = [
   { name: 'Experience', id: 'experience', emoji: '💼' },
   { name: 'Certifications', id: 'certifications', emoji: '📜' },
   { name: 'Achievements', id: 'achievements', emoji: '🏆' },
+  { name: 'Activities', id: 'activities', emoji: '🎯' },
   { name: 'Services', id: 'services', emoji: '⚙️' },
   { name: 'FAQ', id: 'faq', emoji: '❓' },
   { name: 'Contact', id: 'contact', emoji: '📧' },
