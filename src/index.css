@@ -278,19 +278,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* ============================================
-   CURSOR STYLES
-   ============================================ */
 
-@media (pointer: fine) {
-  body {
-    cursor: none !important;
-  }
-
-  a, button, input, textarea, select, [role="button"] {
-    cursor: none !important;
-  }
-}
 
 /* ============================================
    LOADER

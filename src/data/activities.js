@@ -11,8 +11,12 @@ const activities = [
     description: 'Volunteered and contributed as a donor in campus blood donation drives, helping raise awareness about health benefits and saving lives.',
     icon: FaHandHoldingHeart,
     color: 'from-red-500 to-rose-500',
-    image: '/images/blood-donation.jpg',
-    imagePosition: 'object-[center_40%]',
+    image: '/images/blooddonationcertificate.jpeg',
+    imagePosition: 'object-center',
+    gallery: [
+      { src: '/images/blooddonationcertificate.jpeg', caption: 'Blood Donation Certificate' },
+      { src: '/images/blooddonationphoto.jpeg', caption: 'Blood Donation Camp' },
+    ],
   },
   {
     id: 2,

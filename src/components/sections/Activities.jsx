@@ -1,8 +1,10 @@
-import { motion } from 'framer-motion';
+import { useState, useCallback, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeading from '../ui/SectionHeading';
 import GlassCard from '../ui/GlassCard';
 import activities from '../../data/activities';
 import { useTheme } from '../../context/ThemeContext';
+import { FaTimes } from 'react-icons/fa';
 
 const stagger = {
   hidden: { opacity: 0 },
@@ -19,6 +21,33 @@ const fadeUp = {
  */
 export default function Activities() {
   const { theme } = useTheme();
+  const [lightbox, setLightbox] = useState(null); // { gallery, currentIndex }
+
+  const openLightbox = useCallback((gallery) => {
+    if (gallery && gallery.length > 0) {
+      setLightbox({ gallery, currentIndex: 0 });
+    }
+  }, []);
+
+  const closeLightbox = useCallback(() => {
+    setLightbox(null);
+  }, []);
+
+
+
+  // Keyboard: Escape to close
+  useEffect(() => {
+    if (!lightbox) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [lightbox, closeLightbox]);
 
   return (
     <section id="activities" className="section-padding relative overflow-hidden">
@@ -41,12 +70,15 @@ export default function Activities() {
         >
           {activities.map((activity) => {
             const Icon = activity.icon;
+            const hasGallery = activity.gallery && activity.gallery.length > 0;
             return (
               <motion.div
                 key={activity.id}
                 variants={fadeUp}
                 whileHover={{ y: -8, scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                onClick={() => hasGallery && openLightbox(activity.gallery)}
+                style={{ cursor: hasGallery ? 'pointer' : 'default' }}
               >
                 <GlassCard className="h-full relative overflow-hidden group hover:border-primary/30 transition-all duration-300 flex flex-col">
                   {/* Activity Image Banner */}
@@ -60,6 +92,15 @@ export default function Activities() {
                       <div className={`absolute inset-0 bg-gradient-to-t ${
                         theme === 'dark' ? 'from-dark-surface via-transparent' : 'from-light-surface via-transparent'
                       } to-transparent opacity-80`} />
+                      {/* Gallery indicator badge */}
+                      {hasGallery && (
+                        <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-white text-xs font-medium shadow-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          {activity.gallery.length} Photos
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -100,6 +141,68 @@ export default function Activities() {
           })}
         </motion.div>
       </div>
+
+      {/* ─── Lightbox Modal ─── */}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Backdrop */}
+            <motion.div
+              className="absolute inset-0 bg-black/85 backdrop-blur-xl"
+              onClick={closeLightbox}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+
+            {/* Close button */}
+            <button
+              onClick={closeLightbox}
+              className="absolute top-6 right-6 z-50 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-lg"
+              aria-label="Close gallery"
+            >
+              <FaTimes className="text-xl" />
+            </button>
+
+            {/* All images grid */}
+            <motion.div
+              className="relative z-40 w-full max-w-6xl max-h-[90vh] overflow-y-auto flex flex-col sm:flex-row items-center justify-center gap-6"
+              initial={{ scale: 0.85, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 30 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {lightbox.gallery.map((photo, idx) => (
+                <motion.div
+                  key={idx}
+                  className="flex flex-col items-center gap-3"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1, type: 'spring', stiffness: 200, damping: 20 }}
+                >
+                  <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 bg-black/40">
+                    <img
+                      src={photo.src}
+                      alt={photo.caption}
+                      className="max-h-[75vh] w-auto max-w-[85vw] sm:max-w-[42vw] object-contain"
+                    />
+                  </div>
+                  <p className="text-white/80 text-base font-medium text-center">
+                    {photo.caption}
+                  </p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

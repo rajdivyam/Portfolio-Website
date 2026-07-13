@@ -6,14 +6,14 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import ScrollToTop from './components/layout/ScrollToTop';
 import Loader from './components/layout/Loader';
-import CustomCursor from './components/ui/CustomCursor';
+
 import ParticleBackground from './components/ui/ParticleBackground';
 import CommandPalette from './components/ui/CommandPalette';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 
 /**
- * App — root component with routing, theme, cursor, and particles
+ * App — root component with routing, theme, and particles
  */
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -25,8 +25,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
-        {/* Custom Cursor */}
-        <CustomCursor />
+
 
         {/* Particle Background */}
         <ParticleBackground />
